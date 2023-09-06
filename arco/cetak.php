@@ -35,64 +35,27 @@ $query .= " ORDER BY id_alternatif";
         .logo img {
         max-width: 150px;
         }
-        /* CSS untuk logo */
-        .logo {
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        /* CSS untuk teks */
-        .logo-text {
-            display: inline-block;
-            font-size: 14px;
-            vertical-align: middle;
-            margin-left: 10px;
-        }
-        /* CSS untuk mengganti warna teks */
-        .logo-text h3 {
-            color: #3B71CA; /* Ganti kode warna dengan kode warna yang Anda inginkan */
-        }
-
-
         </style>    
     </head>
 
-<body>
  
-    <div class="wrap">
-        <header id="header">
-        <div class="panel panel-container"style="padding: 30px; box-shadow: 2px 2px 5px #BC8F8F; background-color: 	#D8BFD8;">
-                <div class="row">
-                    <div class="col-md-12">
-                        <button id="primary-nav-button" type="button">Menu</button>
-                        <a href="index.php"><div class="logo">
-                            <img src="../assets/desain-home/img/nestle.png" alt="Venue Logo">
-                            <div class="logo-text">
-                            <h3><b>PEKANBARU AREA</b></h3>
-                        </div>
-                        </div></a>
-                        <nav id="primary-nav" class="dropdown cf">
-                        <ul class="dropdown menu">
-                                <li class="active"><a href="index.php"><span class="fa fa-home"></span><b>&emsp;Home</b></a></li>
-                                <li><a href="alternatif.php"><span class="fa fa-user"></span><b>&emsp;Alternatif</b></a></li>
-                                <li><a class="scrollTo" data-scrollTo="blog" href="kriteria.php"><span class="fa fa-list"></span><b>&emsp;Kriteria</b></a></li>
-                                <li><a class="scrollTo" data-scrollTo="blog" href="pra-penilaian.php"><span class="fa fa-pencil"></span><b>&emsp;Penilaian</b></a></li>
-                                <li><a class="scrollTo" data-scrollTo="services" href="metode.php"><span class="fa fa-refresh"></span><b>&emsp;Metode WP</b></a></li>
-                                <li><a class="scrollTo" data-scrollTo="contact" href="logout.php"><span class="fa fa-power-off"></span><b>&emsp;Logout</b></a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </header>
-    </div>
 
 
-    <div class="panel panel-container" style="width: 50%; margin: 0 auto; padding: 20px; box-shadow: 2px 2px 5px #888888;">
-    <h2 class="text-center"><b>HASIL ANALISA PERHITUNGAN METODE WEIGHTED PRODUCT</b></h2>
-
+    <div class="panel panel-container"style="padding: 50px; box-shadow: 2px 2px 5px #888888;">
+    <head>
+<style>
+  .text-center {
+    text-align: center;
+    margin: 1em 0;
+  }
+</style>
+</head>
+<body>
+  <h2 class="text-center"><b>NESTLE AGENCY TEAM PEKANBARU</b>
     <br>
-    <br>
+    <b>Pemilihan Karyawan Terbaik</b>
+  </h2>
+</body>
     <style>
     .sticky-title {
         position: sticky;
@@ -101,16 +64,15 @@ $query .= " ORDER BY id_alternatif";
         padding: 10px; /* Atur padding judul sesuai kebutuhan */
     }
     </style>
-    <h4 class="modal-title sticky-title"><b>Nilai Kriteria</b></h4>
+    <!-- <h4 class="modal-title sticky-title"><b>Nilai Kriteria</b></h4>
     <br>
-    
-    <div class="table-condensed">
+    <div class="table-responsive">
         <style>
         .center-table {
             margin: 0 auto; /* Mengatur margin horizontal menjadi auto */
         }
         </style>
-        <table class="table table-bordered table-hover center-table" style="width: 100%;">
+        <table class="table table-bordered center-table" style="width: 50%;">
             <thead>
                 <tr>
                     <th class="text-center"style="vertical-align: middle;">No</th>
@@ -207,15 +169,15 @@ while ($result=mysqli_fetch_array($query)) {
         padding: 10px; /* Atur padding judul sesuai kebutuhan */
     }
     </style>
-<h4 class="modal-title sticky-title"><b>Nilai Vektor S dan Vektor V</b></h4>
+<h4 class="modal-title sticky-title">Nilai Vektor S dan Vektor V</h4>
 <br>
-<div class="table-condensed">
+<div class="table-responsive">
         <style>
         .center-table {
             margin: 0 auto; /* Mengatur margin horizontal menjadi auto */
         }
         </style>
-        <table class="table table-bordered table-hover center-table" style="width: 100%;">
+        <table class="table table-bordered center-table";">
             <thead>
                 <tr>
                     <th class="text-center">No</th>
@@ -243,7 +205,9 @@ while ($result=mysqli_fetch_array($query)) {
             </tbody>
         </table>
     </div>
-    <br>
+    <br> -->
+
+    <!-- end  -->
 
     <style>
     .sticky-title {
@@ -253,54 +217,21 @@ while ($result=mysqli_fetch_array($query)) {
         padding: 10px; /* Atur padding judul sesuai kebutuhan */
     }
     </style>
-    
-    <h4 class="modal-title sticky-title"><b>Hasil Perankingan</b></h4>
-<head>
-<style>
-  .btn {
-    display: inline-block;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s, color 0.3s;
-  }
-
-  .btn-primary {
-    background-color: #3498db;
-    color: white;
-  }
-
-  .btn-primary:hover {
-    background-color: #2980b9;
-  }
-  .modal-footer .btn {
-  padding: 5px 10px; /* Sesuaikan sesuai kebutuhan Anda */
-  font-size: inherit; /* Mempertahankan ukuran font yang ada */
-}
-
-</style>
-</head>
-<body>
-    <div class="modal-footer">
-        <h4 class="btn btn-primary"><a href="cetak.php" target="_blank" style="color: white;">Cetak</a></h4>
-    </div>
-</body>
-
+  <h4 class="text-center" style="color=black"><b>Hasil Analisa Penilaian Menggunakan Metode Weighted Product</b></h4>
     <div class="table-condensed">
         <style>
         .center-table {
             margin: 0 auto; /* Mengatur margin horizontal menjadi auto */
         }
         </style>
-        <table class="table table-bordered table-hover center-table" style="width: 100%;">
+        <table class="table table-bordered center-table";>
             <thead>
                 <tr>
                     <th class="text-center">No</th>
                     <th class="text-center">Nama Alternatif</th>
                     <th class="text-center">Nilai WP</th>
                     <th class="text-center">Ranking</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -314,6 +245,7 @@ while ($result=mysqli_fetch_array($query)) {
                         <td class="text-left"><?php echo $result['nama_alternatif']; ?></td>
                         <td class="text-center"><?php echo number_format($result['vektor_v'], 4) ?></td>
                         <td class="text-center"><?php echo $result['ranking']; ?></td>
+                      
                     </tr>
                 <?php
                     }
@@ -332,5 +264,6 @@ while ($result=mysqli_fetch_array($query)) {
     <script src="../assets/desain-home/js/datepicker.js"></script>
     <script src="../assets/desain-home/js/plugins.js"></script>
     <script src="../assets/desain-home/js/main.js"></script>
+    <script>window.print();</script>
 </body>
 </html>

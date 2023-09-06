@@ -1,14 +1,9 @@
 <?php
-// Mulai sesi (jika belum dimulai)
 session_start();
-
-// Masukkan file cek.php untuk memeriksa sesi atau otentikasi pengguna
 include '../assets/conn/cek.php';
-
-// Masukkan file konfigurasi database (misalnya, config.php)
 include '../assets/conn/config.php';
-?>
 
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,23 +27,6 @@ include '../assets/conn/config.php';
         .logo img {
         max-width: 150px;
         }
-         /* Gaya untuk tabel */
-  table {
-    width: 100%; /* Lebar tabel 100% dari container */
-    border-collapse: collapse; /* Menggabungkan border sel yang berdekatan */
-  }
-
-  th, td {
-    border: 1px solid #ddd; /* Border untuk sel */
-    padding: 8px; /* Ruang dalam sel */
-    text-align: left; /* Teks rata kiri dalam sel */
-  }
-
-  /* Mengubah tinggi tabel */
-  .custom-table {
-    height: 300px; /* Ubah sesuai keinginan Anda */
-    overflow: auto; /* Tambahkan overflow jika konten lebih tinggi dari tinggi yang ditentukan */
-  }
         .logo img {
         max-width: 150px;
         }
@@ -93,7 +71,7 @@ include '../assets/conn/config.php';
                                 <li class="active"><a href="index.php"><span class="fa fa-home"></span><b>&emsp;Home</b></a></li>
                                 <li><a href="alternatif.php"><span class="fa fa-user"></span><b>&emsp;Alternatif</b></a></li>
                                 <li><a class="scrollTo" data-scrollTo="blog" href="kriteria.php"><span class="fa fa-list"></span><b>&emsp;Kriteria</b></a></li>
-                                <li><a class="scrollTo" data-scrollTo="blog" href="pra-penilaian.php"><span class="fa fa-pencil"></span><b>&emsp;Penilaian</b></a></li>
+                                <li><a class="scrollTo" data-scrollTo="blog" href="penilaian.php"><span class="fa fa-pencil"></span><b>&emsp;Penilaian</b></a></li>
                                 <li><a class="scrollTo" data-scrollTo="services" href="metode.php"><span class="fa fa-refresh"></span><b>&emsp;Metode WP</b></a></li>
                                 <li><a class="scrollTo" data-scrollTo="contact" href="logout.php"><span class="fa fa-power-off"></span><b>&emsp;Logout</b></a></li>
                             </ul>
@@ -105,72 +83,47 @@ include '../assets/conn/config.php';
     </div>
 
 
-    <?php if (isset($_GET['aksi'])) {
-    if ($_GET['aksi']=='tambah') { ?>
     <div class="panel panel-container" style="width: 50%; margin: 0 auto; padding: 20px; box-shadow: 2px 2px 5px #888888;">
-        <h2><b>PERIODE</b></h2>
-            <form action="periode-proses.php" method="POST" enctype="multipart/form-data">  
-                <form method="post">
-                    <label for="nama_periode">Nama Periode:</label>
-                    <input type="text" name="nama_periode" class="form-control" placeholder="Nama Periode" autocomplete="off" required><br>
+        <h2><b>PENILAIAN</b></h2>
+        <a href="periode.php?aksi=tambah" class="btn btn-success btn-sm">
+            <span class="fa fa-plus"></span>&emsp;Tambah Periode
+        </a>
+    <br><br>
+    <div class="table-condensed" style="max-width: 100%; margin: 0 auto;">
+        <table class="table table-bordered table-hover">
+            <thead style="border=1px;">
+                    <tr>
+                        <th class="text-center">No</th>
+                        <th class="text-center">Nama Alternatif</th>
+                        <th class="text-center">Opsi</th>
+                    </tr>   
+            </thead>
+            <tbody>
+            <?php
+                    $query = mysqli_query($conn, "SELECT * FROM tbl_alternatif order by id_alternatif");
+                    $no=1;
+                    while ($result = mysqli_fetch_array($query)) {
+                        $nomor = $no++;
+                        $kode = $result['id_alternatif'];
+                        $nama = $result['nama_alternatif'];
+                        ?>
+                        <tr>
+                            <td class='text-center' style='vertical-align: middle;'><?php echo $nomor ?></td>
+                            <td class='text-left' style='vertical-align: middle;'><?php echo $nama ?></td>
+                            <td class="text-center">
+                                <a href="penilaian-tambah.php?id_alternatif=<?php echo $result['id_alternatif'] ?>" class="btn btn-primary btn-sm" style="padding: 0.2rem 0.5rem;"><span></span>Detail</a>
+                            </td>
+                        </tr>
 
-                    <label for="tanggal_mulai">
-                    Tanggal Mulai:
-                    <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control" autocomplete="off" required>
-                    </label>
-
-                    <label for="tanggal_selesai">
-                    Tanggal Selesai:
-                    <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-control" autocomplete="off" required>
-                    </label>
-            <br>
-            <br>
-                    <div>
-                                <a href="periode.php" class="btn btn-info">Batal</a>
-                                <input type="submit" class="btn btn-danger" value="Simpan">
-                    </div>
-                </form>
-            </form>
+                    <?php
+                    }
+                    ?>
+            </tbody>
+        </table>
     </div>
-    <?php   }elseif ($_GET['aksi']=='ubah') { ?>
-        <div class="panel panel-container" style="width: 50%; margin: 0 auto; padding: 20px; box-shadow: 2px 2px 5px #888888;">
-        <h2><b>PERIODE</b></h2>
-        <?php  
-            $id_periode = $_GET['id_periode'];
-            $query = mysqli_query($conn,"SELECT * FROM tbl_periode WHERE id_periode='$id_periode'");
-            while($result = mysqli_fetch_array($query)) {
-            ?>                   
+</div>
+</div>
 
-            <form action="periode-proses.php?proses=proses-ubah" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="id_periode" value="<?php echo $result['id_periode'] ?>">
-                <div>
-                    <label>Nama Periode</label>
-                <input type="text" name="nama_periode" class="form-control" placeholder="Nama periode" autocomplete="off" required onsubmit="this.setCustomValidity('')" value="<?php echo $result['nama_periode'] ?>">
-                </div>
-                <br>
-                <label for="tanggal_mulai">
-                    Tanggal Mulai:
-                    <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control" autocomplete="off" required onsubmit="this.setCustomValidity('')" value="<?php echo $result['tanggal_mulai'] ?>">
-                    </label>
-
-                    <label for="tanggal_selesai">
-                    Tanggal Selesai:
-                    <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-control" autocomplete="off" required onsubmit="this.setCustomValidity('')" value="<?php echo $result['tanggal_selesai'] ?>">
-                    </label>
-
-                    <br>
-            <br>
-                    <div>
-                                <a href="periode.php" class="btn btn-info">Batal</a>
-                                <input type="submit" class="btn btn-danger" value="Simpan">
-                    </div>
-                </form>
-            </form>
-            </form>
-        
-                <?php   }}} ?>
-        </div>
-        
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
     <script>window.jQuery || document.write('<script src="../assets/desain-home/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>

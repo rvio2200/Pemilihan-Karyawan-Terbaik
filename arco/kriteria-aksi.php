@@ -1,14 +1,8 @@
 <?php
-// Mulai sesi (jika belum dimulai)
 session_start();
-
-// Masukkan file cek.php untuk memeriksa sesi atau otentikasi pengguna
 include '../assets/conn/cek.php';
-
-// Masukkan file konfigurasi database (misalnya, config.php)
 include '../assets/conn/config.php';
 ?>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -29,26 +23,6 @@ include '../assets/conn/config.php';
         <link rel="stylesheet" href="../assets/desain-home/css/templatemo-style.css">
         <script src="../assets/desain-home/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
         <style>
-        .logo img {
-        max-width: 150px;
-        }
-         /* Gaya untuk tabel */
-  table {
-    width: 100%; /* Lebar tabel 100% dari container */
-    border-collapse: collapse; /* Menggabungkan border sel yang berdekatan */
-  }
-
-  th, td {
-    border: 1px solid #ddd; /* Border untuk sel */
-    padding: 8px; /* Ruang dalam sel */
-    text-align: left; /* Teks rata kiri dalam sel */
-  }
-
-  /* Mengubah tinggi tabel */
-  .custom-table {
-    height: 300px; /* Ubah sesuai keinginan Anda */
-    overflow: auto; /* Tambahkan overflow jika konten lebih tinggi dari tinggi yang ditentukan */
-  }
         .logo img {
         max-width: 150px;
         }
@@ -93,7 +67,7 @@ include '../assets/conn/config.php';
                                 <li class="active"><a href="index.php"><span class="fa fa-home"></span><b>&emsp;Home</b></a></li>
                                 <li><a href="alternatif.php"><span class="fa fa-user"></span><b>&emsp;Alternatif</b></a></li>
                                 <li><a class="scrollTo" data-scrollTo="blog" href="kriteria.php"><span class="fa fa-list"></span><b>&emsp;Kriteria</b></a></li>
-                                <li><a class="scrollTo" data-scrollTo="blog" href="pra-penilaian.php"><span class="fa fa-pencil"></span><b>&emsp;Penilaian</b></a></li>
+                                <li><a class="scrollTo" data-scrollTo="blog" href="penilaian.php"><span class="fa fa-pencil"></span><b>&emsp;Penilaian</b></a></li>
                                 <li><a class="scrollTo" data-scrollTo="services" href="metode.php"><span class="fa fa-refresh"></span><b>&emsp;Metode WP</b></a></li>
                                 <li><a class="scrollTo" data-scrollTo="contact" href="logout.php"><span class="fa fa-power-off"></span><b>&emsp;Logout</b></a></li>
                             </ul>
@@ -107,73 +81,87 @@ include '../assets/conn/config.php';
 
     <?php if (isset($_GET['aksi'])) {
     if ($_GET['aksi']=='tambah') { ?>
-    <div class="panel panel-container" style="width: 50%; margin: 0 auto; padding: 20px; box-shadow: 2px 2px 5px #888888;">
-        <h2><b>PERIODE</b></h2>
-            <form action="periode-proses.php" method="POST" enctype="multipart/form-data">  
-                <form method="post">
-                    <label for="nama_periode">Nama Periode:</label>
-                    <input type="text" name="nama_periode" class="form-control" placeholder="Nama Periode" autocomplete="off" required><br>
+        
+        <div class="panel panel-container" style="width: 50%; margin: 0 auto; padding: 20px; box-shadow: 2px 2px 5px #888888;">
+            <h2><b>DATA KRITERIA/Tambah Data</b></h2>
+            
+            <form action="kriteria-proses.php?proses=proses-tambah" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Nama Kriteria</label>
+                    <input type="text" name="nama_kriteria" class="form-control" placeholder="Nama Kriteria" autocomplete="off" required onsubmit="this.setCustomValidity('')">
+                </div>
 
-                    <label for="tanggal_mulai">
-                    Tanggal Mulai:
-                    <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control" autocomplete="off" required>
-                    </label>
+                <div class="form-group">
+                    <label>Bobot Kriteria</label>
+                    <input type="number" name="bobot_kriteria" class="form-control" placeholder="0" autocomplete="off" required onsubmit="this.setCustomValidity('')">
+                </div>
 
-                    <label for="tanggal_selesai">
-                    Tanggal Selesai:
-                    <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-control" autocomplete="off" required>
-                    </label>
-            <br>
-            <br>
-                    <div>
-                                <a href="periode.php" class="btn btn-info">Batal</a>
-                                <input type="submit" class="btn btn-danger" value="Simpan">
-                    </div>
-                </form>
+                <div class="form-group">
+                    <label>Tipe Kriteria</label>
+                    <select class="form-control" name="tipe_kriteria" autocomplete="off" required>
+                        <option value="Benefit" >Benefit</option>
+                        <option value="Cost" >Cost</option>
+                    </select>
+                </div>
+ 
+                <div class="modal-footer">
+                    <a href="kriteria.php" class="btn btn-info">Batal</a>
+                    <input type="submit" class="btn btn-danger" value="Simpan">
+                </div>
             </form>
-    </div>
+        </div>
+    
     <?php   }elseif ($_GET['aksi']=='ubah') { ?>
         <div class="panel panel-container" style="width: 50%; margin: 0 auto; padding: 20px; box-shadow: 2px 2px 5px #888888;">
-        <h2><b>PERIODE</b></h2>
-        <?php  
-            $id_periode = $_GET['id_periode'];
-            $query = mysqli_query($conn,"SELECT * FROM tbl_periode WHERE id_periode='$id_periode'");
+        <h2><b>DATA KRITERIA/Ubah Data</b></h2>
+
+            <?php  
+            $id_kriteria = $_GET['id_kriteria'];
+            $query = mysqli_query($conn,"SELECT * FROM tbl_kriteria WHERE id_kriteria='$id_kriteria'");
             while($result = mysqli_fetch_array($query)) {
             ?>                   
 
-            <form action="periode-proses.php?proses=proses-ubah" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="id_periode" value="<?php echo $result['id_periode'] ?>">
-                <div>
-                    <label>Nama Periode</label>
-                <input type="text" name="nama_periode" class="form-control" placeholder="Nama periode" autocomplete="off" required onsubmit="this.setCustomValidity('')" value="<?php echo $result['nama_periode'] ?>">
+            <form action="kriteria-proses.php?proses=proses-ubah" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="id_kriteria" value="<?php echo $result['id_kriteria'] ?>">
+               
+                <div class="form-group">
+                    <label>Nama Kriteria</label>
+                    <input type="text" name="nama_kriteria" class="form-control" placeholder="Nama Kriteria" autocomplete="off" required onsubmit="this.setCustomValidity('')" value="<?php echo $result['nama_kriteria'] ?>">
                 </div>
-                <br>
-                <label for="tanggal_mulai">
-                    Tanggal Mulai:
-                    <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control" autocomplete="off" required onsubmit="this.setCustomValidity('')" value="<?php echo $result['tanggal_mulai'] ?>">
-                    </label>
 
-                    <label for="tanggal_selesai">
-                    Tanggal Selesai:
-                    <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-control" autocomplete="off" required onsubmit="this.setCustomValidity('')" value="<?php echo $result['tanggal_selesai'] ?>">
-                    </label>
+                <div class="form-group">
+                    <label>Bobot Kriteria</label>
+                <input type="text" name="bobot_kriteria" class="form-control" autocomplete="off" required onsubmit="this.setCustomValidity('')" value="<?php echo $result['bobot_kriteria'] ?>">
+                </div>
 
-                    <br>
-            <br>
-                    <div>
-                                <a href="periode.php" class="btn btn-info">Batal</a>
-                                <input type="submit" class="btn btn-danger" value="Simpan">
-                    </div>
-                </form>
-            </form>
+                <div class="form-group">
+                    <label>Tipe Kriteria</label>
+                    <select class="form-control" name="tipe_kriteria" autocomplete="off" required>
+                        <option value="Benefit" <?php if ($result['tipe_kriteria'] == 1) echo "selected"; ?>>Benefit</option>
+                        <option value="Cost" <?php if ($result['tipe_kriteria'] == 2) echo "selected"; ?>>Cost</option>
+                    </select>
+                </div>
+
+ 
+                <div class="modal-footer">
+                    <a href="kriteria.php" class="btn btn-info">Batal</a>
+                    <input type="submit" class="btn btn-danger" value="Ubah">
+                </div>
             </form>
         
-                <?php   }}} ?>
+                <?php   } ?>
         </div>
         
+    <?php    } } ?>
+
+    
+</div>
+</div>
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
     <script>window.jQuery || document.write('<script src="../assets/desain-home/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
     <script src="../assets/desain-home/js/vendor/bootstrap.min.js"></script>
     <script src="../assets/desain-home/js/datepicker.js"></script>
     <script src="../assets/desain-home/js/plugins.js"></script>

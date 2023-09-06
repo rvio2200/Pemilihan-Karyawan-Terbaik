@@ -76,7 +76,7 @@ $query .= " ORDER BY id_alternatif";
                                 <li class="active"><a href="index.php"><span class="fa fa-home"></span><b>&emsp;Home</b></a></li>
                                 <li><a href="alternatif.php"><span class="fa fa-user"></span><b>&emsp;Alternatif</b></a></li>
                                 <li><a class="scrollTo" data-scrollTo="blog" href="kriteria.php"><span class="fa fa-list"></span><b>&emsp;Kriteria</b></a></li>
-                                <li><a class="scrollTo" data-scrollTo="blog" href="pra-penilaian.php"><span class="fa fa-pencil"></span><b>&emsp;Penilaian</b></a></li>
+                                <li><a class="scrollTo" data-scrollTo="blog" href="penilaian.php"><span class="fa fa-pencil"></span><b>&emsp;Penilaian</b></a></li>
                                 <li><a class="scrollTo" data-scrollTo="services" href="metode.php"><span class="fa fa-refresh"></span><b>&emsp;Metode WP</b></a></li>
                                 <li><a class="scrollTo" data-scrollTo="contact" href="logout.php"><span class="fa fa-power-off"></span><b>&emsp;Logout</b></a></li>
                             </ul>
@@ -93,6 +93,33 @@ $query .= " ORDER BY id_alternatif";
 
     <br>
     <br>
+    <form action="metode-proses.php" method="POST" class="form-inline" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="periode">Filter Periode:</label>
+        <select class="form-control" id="periode" name="periode">
+            <option value="">-- Pilih Periode --</option>
+            <?php
+            // Koneksi ke database menggunakan $conn (sesuaikan dengan kode Anda)
+            $sql = "SELECT id_periode, nama_periode FROM tbl_periode";
+            $result = mysqli_query($conn, $sql);
+
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $id_periode = $row['id_periode'];
+                    $nama_periode = $row['nama_periode'];
+                    echo "<option value='$id_periode'>$nama_periode</option>";
+                }
+            } else {
+                echo "<option value=''>Tidak ada data periode</option>";
+            }
+
+            // Tutup koneksi ke database jika sudah selesai
+            mysqli_close($conn);
+            ?>
+        </select>
+    </div>
+    <a href="metode-aksi.php"><button type="submit" class="btn btn-success btn-sm">Filter</button></a>
+</form>
     <style>
     .sticky-title {
         position: sticky;
@@ -176,24 +203,24 @@ while ($result=mysqli_fetch_array($query)) {
     }
 
         //ambil nilai vektor_s simpan ke dalam database
-        mysqli_query($conn, "UPDATE tbl_alternatif SET vektor_s ='$vektor_s' WHERE id_alternatif='$id'");
+        mysqli_query($conn, "UPDATE tbl_hasil SET vektor_s ='$vektor_s' WHERE id_alternatif='$id'");
 
         //Vektor V
-        $query4 = mysqli_query($conn, "SELECT sum(vektor_s) as sum_s FROM tbl_alternatif");
+        $query4 = mysqli_query($conn, "SELECT sum(vektor_s) as sum_s FROM tbl_hasil");
         $b = mysqli_fetch_array($query4);
         $vektor_v = $vektor_s/$b['sum_s'];
 
         //ambil nilai vektor_v simpan ke dalam database
-        mysqli_query($conn, "UPDATE tbl_alternatif SET vektor_v ='$vektor_v' WHERE id_alternatif='$id'");
+        mysqli_query($conn, "UPDATE tbl_hasil SET vektor_v ='$vektor_v' WHERE id_alternatif='$id'");
         $jumlah++;
 }
 
         // Set Ranking
-        $query5 = mysqli_query($conn, "SELECT * FROM tbl_alternatif ORDER BY vektor_v DESC");
+        $query5 = mysqli_query($conn, "SELECT * FROM tbl_hasil ORDER BY vektor_v DESC");
         $rank = 1;
         while ($result5 = mysqli_fetch_array($query5)) {
             $id_alternatif = $result5['id_alternatif'];
-            mysqli_query($conn, "UPDATE tbl_alternatif SET ranking='$rank' WHERE id_alternatif='$id_alternatif'");
+            mysqli_query($conn, "UPDATE tbl_hasil SET ranking='$rank' WHERE id_alternatif='$id_alternatif'");
             $rank++;
 }
 
@@ -209,6 +236,7 @@ while ($result=mysqli_fetch_array($query)) {
     </style>
 <h4 class="modal-title sticky-title"><b>Nilai Vektor S dan Vektor V</b></h4>
 <br>
+
 <div class="table-condensed">
         <style>
         .center-table {
@@ -226,7 +254,7 @@ while ($result=mysqli_fetch_array($query)) {
             </thead>
             <tbody>
                 <?php
-                    $query = mysqli_query($conn, "SELECT * FROM tbl_alternatif order by id_alternatif");
+                    $query = mysqli_query($conn, "SELECT * FROM tbl_hasil order by id_alternatif");
                     $no=1;
                     while ($result = mysqli_fetch_array($query)) {
                 ?>
@@ -305,7 +333,7 @@ while ($result=mysqli_fetch_array($query)) {
             </thead>
             <tbody>
                 <?php
-                    $query = mysqli_query($conn, "SELECT * FROM tbl_alternatif order by ranking");
+                    $query = mysqli_query($conn, "SELECT * FROM tbl_hasil order by ranking");
                     $no=1;
                     while ($result = mysqli_fetch_array($query)) {
                 ?>
