@@ -3,13 +3,6 @@ session_start();
 include '../assets/conn/cek.php';
 include '../assets/conn/config.php';
 
-$filter_periode = isset($_POST['periode']) ? $_POST['periode'] : '';
-
-$query = "SELECT * FROM tbl_alternatif";
-if (!empty($filter_periode)) {
-    $query .= " WHERE DATE_FORMAT(periode, '%m') = '$filter_periode'";
-}
-$query .= " ORDER BY id_alternatif";
 ?>
 <!DOCTYPE html>
 <html>
@@ -94,7 +87,6 @@ $query .= " ORDER BY id_alternatif";
                 <select class="form-control" id="periode" name="periode">
                     <option value="">-- Pilih Periode --</option>
                     <?php
-                    // Koneksi ke database menggunakan $conn (sesuaikan dengan kode Anda)
                     $sql = "SELECT id_periode, nama_periode FROM tbl_periode";
                     $result = mysqli_query($conn, $sql);
 
@@ -107,171 +99,12 @@ $query .= " ORDER BY id_alternatif";
                     } else {
                         echo "<option value=''>Tidak ada data periode</option>";
                     }
-
-                    // Tutup koneksi ke database jika sudah selesai
-                    mysqli_close($conn);
                     ?>
                 </select>
             </div>
             <a href="metode-aksi.php"><button type="submit" class="btn btn-success btn-sm">Filter</button></a>
         </form>
-        <style>
-            .sticky-title {
-                position: sticky;
-                top: 0;
-                background-color: #f1f1f1; /* Warna latar belakang judul */
-                padding: 10px; /* Atur padding judul sesuai kebutuhan */
-            }
-        </style>
         <br>
-    
-        <h4 class="modal-title sticky-title"><b>Nilai Kriteria</b></h4>
-        <br>
-    
-        <div class="table-condensed">
-            <style>
-                .center-table {
-                    margin: 0 auto; /* Mengatur margin horizontal menjadi auto */
-                }
-            </style>
-            <table class="table table-bordered table-hover center-table" style="width: 100%;">
-                <thead>
-                    <tr>
-                        <th class="text-center" style="vertical-align: middle;">No</th>
-                        <th class="text-center" style="vertical-align: middle;" style="white-space: nowrap;">Kriteria</th>
-                        <th class="text-center" style="vertical-align: middle;">Bobot</th>
-                        <th class="text-center" style="vertical-align: middle;">Normalisasi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $query = mysqli_query($conn, "SELECT * FROM tbl_kriteria order by id_kriteria");
-                    $no = 1;
-                    while ($result = mysqli_fetch_array($query)) { ?>
-                    <tr>
-                        <td class="text-center"><?php echo $no++ ?></td>
-                        <td class="text-left"><?php echo $result['nama_kriteria'] ?></td>
-                        <td class="text-center"><?php echo $result['bobot_kriteria'] ?> / 13</td>
-                        <td class="text-center">
-                            <?php
-                            $bobot = $result['bobot_kriteria'];
-                            if ($result['tipe_kriteria'] == 'Cost') { // Jika tipe kriteria adalah "cost"
-                                $bobot = -1 * $bobot; // Kalikan bobot dengan -1
-                            }
-                            echo number_format($bobot / 13, 4, '.', ',');
-                            ?>
-                        </td>
-                    </tr>
-                    <?php
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-        <br>
-    
-        <?php
-        // Set Vektor S dan Vektor V
-    
-        $query=mysqli_query($conn, "SELECT * FROM tbl_alternatif");
-        $jumlah=0;
-        while ($result=mysqli_fetch_array($query)) {
-            $nomor=$no++;
-            $vektor_s=1;
-            $id=$result['id_alternatif'];
-            $nama=$result['nama_alternatif'];
-    
-            //Panggil nilai matriks keputusan
-            $query2=mysqli_query($conn, "SELECT s.nilai_subkriteria as sub,n.id_kriteria as id_kriteria FROM tbl_subkriteria s, tbl_nilai n, tbl_kriteria k WHERE n.id_alternatif='$id' AND s.id_subkriteria=n.id_subkriteria AND k.id_kriteria=n.id_kriteria ORDER BY n.id_kriteria");
-            while ($result2=mysqli_fetch_array($query2)) {
-                $val = $result2['sub'];
-    
-                //Panggil nilai bobot
-                $query3=mysqli_query($conn, "SELECT bobot_kriteria FROM tbl_kriteria WHERE id_kriteria='$result2[id_kriteria]'");
-                $result3=mysqli_fetch_assoc($query3);
-                //Normalisasikan nilai bobot kriteria
-                $bobot_k=$result3['bobot_kriteria']/13;
-    
-                //Vektor S
-                $val_s = $val ** $bobot_k;
-                $vektor_s *= $val_s;
-    
-            }
-    
-                //ambil nilai vektor_s simpan ke dalam database
-                mysqli_query($conn, "UPDATE tbl_hasil SET vektor_s ='$vektor_s' WHERE id_alternatif='$id'");
-    
-                //Vektor V
-                $query4 = mysqli_query($conn, "SELECT sum(vektor_s) as sum_s FROM tbl_hasil");
-                $b = mysqli_fetch_array($query4);
-                $vektor_v = $vektor_s/$b['sum_s'];
-    
-                //ambil nilai vektor_v simpan ke dalam database
-                mysqli_query($conn, "UPDATE tbl_hasil SET vektor_v ='$vektor_v' WHERE id_alternatif='$id'");
-                $jumlah++;
-        }
-    
-        // Set Ranking
-        $query5 = mysqli_query($conn, "SELECT * FROM tbl_hasil ORDER BY vektor_v DESC");
-        $rank = 1;
-        while ($result5 = mysqli_fetch_array($query5)) {
-            $id_alternatif = $result5['id_alternatif'];
-            mysqli_query($conn, "UPDATE tbl_hasil SET ranking='$rank' WHERE id_alternatif='$id_alternatif'");
-            $rank++;
-        }
-        ?>
-        <style>
-            .sticky-title {
-                position: sticky;
-                top: 0;
-                background-color: #f1f1f1; /* Warna latar belakang judul */
-                padding: 10px; /* Atur padding judul sesuai kebutuhan */
-            }
-        </style>
-        <h4 class="modal-title sticky-title"><b>Nilai Vektor S dan Vektor V</b></h4>
-        <br>
-        <div class="table-condensed">
-            <style>
-                .center-table {
-                    margin: 0 auto; /* Mengatur margin horizontal menjadi auto */
-                }
-            </style>
-            <table class="table table-bordered table-hover center-table" style="width: 100%;">
-                <thead>
-                    <tr>
-                        <th class="text-center">No</th>
-                        <th class="text-center">Nama Alternatif</th>
-                        <th class="text-center">Vektor S</th>
-                        <th class="text-center">Vektor V</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                        $query = mysqli_query($conn, "SELECT * FROM tbl_hasil order by id_alternatif");
-                        $no=1;
-                        while ($result = mysqli_fetch_array($query)) {
-                    ?>
-                        <tr>
-                            <td class="text-center"><?php echo $no++ ?></td>
-                            <td class="text-left"><?php echo $result['nama_alternatif']; ?></td>
-                            <td class="text-center"><?php echo number_format($result['vektor_s'], 4) ?></td>
-                            <td class="text-center"><?php echo number_format($result['vektor_v'], 4) ?></td>
-                        </tr>
-                    <?php
-                        }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-        <br>
-        <style>
-            .sticky-title {
-                position: sticky;
-                top: 0;
-                background-color: #f1f1f1; /* Warna latar belakang judul */
-                padding: 10px; /* Atur padding judul sesuai kebutuhan */
-            }
-        </style>
         <h4 class="modal-title sticky-title"><b>Hasil Perankingan</b></h4>
         <head>
             <style>
@@ -338,8 +171,114 @@ $query .= " ORDER BY id_alternatif";
                 </tbody>
             </table>
         </div>
+        <style>
+            .sticky-title {
+                position: sticky;
+                top: 0;
+                background-color: #f1f1f1; /* Warna latar belakang judul */
+                padding: 10px; /* Atur padding judul sesuai kebutuhan */
+            }
+        </style>
+        <br>
+    
+        <!-- <h4 class="modal-title sticky-title"><b>Nilai Kriteria</b></h4>
+        <br>
+    
+        <div class="table-condensed">
+            <style>
+                .center-table {
+                    margin: 0 auto; /* Mengatur margin horizontal menjadi auto */
+                }
+            </style>
+            <table class="table table-bordered table-hover center-table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="vertical-align: middle;">No</th>
+                        <th class="text-center" style="vertical-align: middle;" style="white-space: nowrap;">Kriteria</th>
+                        <th class="text-center" style="vertical-align: middle;">Bobot</th>
+                        <th class="text-center" style="vertical-align: middle;">Normalisasi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $query = mysqli_query($conn, "SELECT * FROM tbl_kriteria order by id_kriteria");
+                    $no = 1;
+                    while ($result = mysqli_fetch_array($query)) { ?>
+                    <tr>
+                        <td class="text-center"><?php echo $no++ ?></td>
+                        <td class="text-left"><?php echo $result['nama_kriteria'] ?></td>
+                        <td class="text-center"><?php echo $result['bobot_kriteria'] ?> / 13</td>
+                        <td class="text-center">
+                            <?php
+                            $bobot = $result['bobot_kriteria'];
+                            if ($result['tipe_kriteria'] == 'Cost') { // Jika tipe kriteria adalah "cost"
+                                $bobot = -1 * $bobot; // Kalikan bobot dengan -1
+                            }
+                            echo number_format($bobot / 13, 4, '.', ',');
+                            ?>
+                        </td>
+                    </tr>
+                    <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <style>
+            .sticky-title {
+                position: sticky;
+                top: 0;
+                background-color: #f1f1f1; /* Warna latar belakang judul */
+                padding: 10px; /* Atur padding judul sesuai kebutuhan */
+            }
+        </style>
+        <h4 class="modal-title sticky-title"><b>Nilai Vektor S dan Vektor V</b></h4>
+        <br>
+        <div class="table-condensed">
+            <style>
+                .center-table {
+                    margin: 0 auto; /* Mengatur margin horizontal menjadi auto */
+                }
+            </style>
+            <table class="table table-bordered table-hover center-table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th class="text-center">No</th>
+                        <th class="text-center">Nama Alternatif</th>
+                        <th class="text-center">Vektor S</th>
+                        <th class="text-center">Vektor V</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $query = mysqli_query($conn, "SELECT * FROM tbl_hasil order by id_alternatif");
+                        $no=1;
+                        while ($result = mysqli_fetch_array($query)) {
+                    ?>
+                        <tr>
+                            <td class="text-center"><?php echo $no++ ?></td>
+                            <td class="text-left"><?php echo $result['nama_alternatif']; ?></td>
+                            <td class="text-center"><?php echo number_format($result['vektor_s'], 4) ?></td>
+                            <td class="text-center"><?php echo number_format($result['vektor_v'], 4) ?></td>
+                        </tr>
+                    <?php
+                        }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <style>
+            .sticky-title {
+                position: sticky;
+                top: 0;
+                background-color: #f1f1f1; /* Warna latar belakang judul */
+                padding: 10px; /* Atur padding judul sesuai kebutuhan */
+            }
+        </style>
     </div>
-</div>
+</div> -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
 <script>window.jQuery || document.write('<script src="../assets/desain-home/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>

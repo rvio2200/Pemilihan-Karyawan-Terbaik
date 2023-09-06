@@ -3,14 +3,6 @@ session_start();
 include '../assets/conn/cek.php';
 include '../assets/conn/config.php';
 
-$filter_periode = isset($_POST['periode']) ? $_POST['periode'] : '';
-
-$query = "SELECT * FROM tbl_alternatif";
-if (!empty($filter_periode)) {
-    $query .= " WHERE DATE_FORMAT(periode, '%m') = '$filter_periode'";
-}
-$query .= " ORDER BY id_alternatif";
-
 ?>
 
 <!DOCTYPE html>
@@ -111,9 +103,6 @@ $query .= " ORDER BY id_alternatif";
                 } else {
                     echo "<option value=''>Tidak ada data periode</option>";
                 }
-
-                // Tutup koneksi ke database jika sudah selesai
-                mysqli_close($conn);
                 ?>
             </select>
         </div>
