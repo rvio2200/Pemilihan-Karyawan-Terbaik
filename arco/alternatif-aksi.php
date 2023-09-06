@@ -119,7 +119,7 @@ include '../assets/conn/config.php';
                 </div>
                 <div>
                     <label>Position</label>
-                <input type="text" name="position" class="form-control" placeholder="Position" autocomplete="off" required onsubmit="this.setCustomValidity('')" value="<?php echo $result['level'] ?>">
+                <input type="text" name="position" class="form-control" placeholder="Position" autocomplete="off" required onsubmit="this.setCustomValidity('')" value="<?php echo $result['position'] ?>">
                 </div>
  
                 <div class="modal-footer">

@@ -79,7 +79,14 @@ include '../assets/conn/config.php';
     </div>
 
     <div class="panel panel-container" style="width: 50%; margin: 0 auto; padding: 20px; box-shadow: 2px 2px 5px #888888;">
+    <?php
+        $query1 = mysqli_query($conn, "SELECT * FROM tbl_nilai WHERE id_periode='$_GET[id_periode]'");
+        $result1 = mysqli_fetch_array($query1);
+        ?>
+
         <h2 class="text-center"><b>HASIL ANALISA PERHITUNGAN METODE WEIGHTED PRODUCT</b></h2>
+        <h2 class="text-center"><b><?php echo $result1['nama_periode']; ?></b></h2>
+
         <br><br>
         <form action="metode-proses.php" method="POST" class="form-inline" enctype="multipart/form-data">
             <div class="form-group">

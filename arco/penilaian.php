@@ -111,7 +111,7 @@ include '../assets/conn/config.php';
                             <td class='text-center' style='vertical-align: middle;'><?php echo $nomor ?></td>
                             <td class='text-left' style='vertical-align: middle;'><?php echo $nama ?></td>
                             <td class="text-center">
-                                <a href="penilaian-tambah.php?id_alternatif=<?php echo $result['id_alternatif'] ?>" class="btn btn-primary btn-sm" style="padding: 0.2rem 0.5rem;"><span></span>Detail</a>
+                                <a href="penilaian-tambah.php?id_alternatif=<?php echo $result['id_alternatif'] ?>" class="btn btn-primary btn-sm" style="padding: 0.2rem 0.5rem;"><span></span>Lihat</a>
                             </td>
                         </tr>
 
