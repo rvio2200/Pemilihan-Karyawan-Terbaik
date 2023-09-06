@@ -103,7 +103,10 @@ include '../assets/conn/config.php';
                 </select>
             </div>
             <a href="metode-aksi.php"><button type="submit" class="btn btn-success btn-sm">Filter</button></a>
+            <br>
+                <h4 class="btn btn-primary btn-sm"><a href="cetak.php" target="_blank" style="color: white;">Cetak</a></h4>
         </form>
+
         <br>
         <h4 class="modal-title sticky-title"><b>Hasil Perankingan</b></h4>
         <head>
@@ -134,10 +137,6 @@ include '../assets/conn/config.php';
             </style>
         </head>
         <body>
-            <div class="modal-footer">
-                <h4 class="btn btn-primary"><a href="cetak.php" target="_blank" style="color: white;">Cetak</a></h4>
-            </div>
-        </body>
         <div class="table-condensed">
             <style>
                 .center-table {
@@ -179,7 +178,7 @@ include '../assets/conn/config.php';
                 padding: 10px; /* Atur padding judul sesuai kebutuhan */
             }
         </style>
-        <br>
+        <br></body>
     
         <!-- <h4 class="modal-title sticky-title"><b>Nilai Kriteria</b></h4>
         <br>

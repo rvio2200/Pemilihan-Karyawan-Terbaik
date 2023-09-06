@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 04, 2023 at 07:47 PM
+-- Generation Time: Sep 06, 2023 at 09:58 AM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 7.3.12
 
@@ -41,7 +41,7 @@ CREATE TABLE `tbl_akun` (
 --
 
 INSERT INTO `tbl_akun` (`id_akun`, `nama_lengkap`, `email`, `password`, `level`) VALUES
-(1, 'Administrator', 'admin@gmail.com', 'admin2200', 'Admin'),
+(1, 'Administrator', 'admin@gmail.com', 'admin', 'Admin'),
 (2, 'Area Coordinator', 'areacoordinator@gmail.com', 'arco12345', 'Area Coordinator');
 
 -- --------------------------------------------------------
@@ -53,36 +53,49 @@ INSERT INTO `tbl_akun` (`id_akun`, `nama_lengkap`, `email`, `password`, `level`)
 CREATE TABLE `tbl_alternatif` (
   `id_alternatif` int(11) NOT NULL,
   `nama_alternatif` varchar(50) NOT NULL,
-  `vektor_s` double NOT NULL,
-  `vektor_v` double NOT NULL,
-  `ranking` int(11) NOT NULL
+  `position` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_alternatif`
 --
 
-INSERT INTO `tbl_alternatif` (`id_alternatif`, `nama_alternatif`, `vektor_s`, `vektor_v`, `ranking`) VALUES
-(16, 'Karyawan 1', 1, 0.05, 1),
-(17, 'Karyawan 2', 1, 0.05, 12),
-(18, 'Karyawan 3', 1, 0.05, 13),
-(19, 'Karyawan 4', 1, 0.05, 14),
-(20, 'Karyawan 5', 1, 0.05, 15),
-(21, 'Karyawan 6', 1, 0.05, 16),
-(22, 'Karyawan 7', 1, 0.05, 17),
-(23, 'Karyawan 8', 1, 0.05, 18),
-(24, 'Karyawan 9', 1, 0.05, 19),
-(25, 'Karyawan 10', 1, 0.05, 11),
-(26, 'Karyawan 11', 1, 0.05, 10),
-(27, 'Karyawan 12', 1, 0.05, 2),
-(28, 'Karyawan 13', 1, 0.05, 3),
-(29, 'Karyawan 14', 1, 0.05, 4),
-(30, 'Karyawan 15', 1, 0.05, 5),
-(31, 'Karyawan 16', 1, 0.05, 6),
-(32, 'Karyawan 17', 1, 0.05, 7),
-(33, 'Karyawan 18', 1, 0.05, 8),
-(34, 'Karyawan 19', 1, 0.05, 9),
-(38, 'Karyawan 20', 1, 0.05, 20);
+INSERT INTO `tbl_alternatif` (`id_alternatif`, `nama_alternatif`, `position`) VALUES
+(1, 'Karyawan 1', 'SMD/GT'),
+(2, 'Karyawan 2', 'SMD/GT'),
+(3, 'Karyawan 3', 'SMD/GT'),
+(4, 'Karyawan 4', 'SMD/GT'),
+(5, 'Karyawan 5', 'SMD/GT'),
+(6, 'Karyawan 6', 'SMD/GT'),
+(7, 'Karyawan 7', 'SMD/GT'),
+(8, 'Karyawan 8', 'SMD/GT'),
+(9, 'Karyawan 9', 'SMD/GT'),
+(10, 'Karyawan 10', 'SMD/GT'),
+(11, 'Karyawan 11', 'SMD/GT'),
+(12, 'Karyawan 12', 'SMD/GT'),
+(13, 'Karyawan 13', 'SMD/GT'),
+(14, 'Karyawan 14', 'SMD/GT'),
+(15, 'Karyawan 15', 'SMD/GT'),
+(16, 'Karyawan 16', 'SMD/GT'),
+(17, 'Karyawan 17', 'SMD/GT'),
+(18, 'Karyawan 18', 'SMD/GT'),
+(19, 'Karyawan 19', 'SMD/GT'),
+(20, 'Karyawan 20', 'TFA');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_hasil`
+--
+
+CREATE TABLE `tbl_hasil` (
+  `id_hasil` int(11) NOT NULL,
+  `id_alternatif` int(11) NOT NULL,
+  `id_periode` int(11) NOT NULL,
+  `vektor_s` double NOT NULL,
+  `vektor_v` double NOT NULL,
+  `ranking` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -235,8 +248,7 @@ INSERT INTO `tbl_subkriteria` (`id_subkriteria`, `id_kriteria`, `nama_subkriteri
 (68, 23, 'Baik', 4),
 (69, 23, 'Cukup', 3),
 (70, 23, 'Kurang', 2),
-(71, 23, 'Kurang Sekali', 1),
-(72, 0, '1', 1);
+(71, 23, 'Kurang Sekali', 1);
 
 --
 -- Indexes for dumped tables
@@ -253,6 +265,12 @@ ALTER TABLE `tbl_akun`
 --
 ALTER TABLE `tbl_alternatif`
   ADD PRIMARY KEY (`id_alternatif`);
+
+--
+-- Indexes for table `tbl_hasil`
+--
+ALTER TABLE `tbl_hasil`
+  ADD PRIMARY KEY (`id_hasil`);
 
 --
 -- Indexes for table `tbl_kriteria`
@@ -292,7 +310,13 @@ ALTER TABLE `tbl_akun`
 -- AUTO_INCREMENT for table `tbl_alternatif`
 --
 ALTER TABLE `tbl_alternatif`
-  MODIFY `id_alternatif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id_alternatif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `tbl_hasil`
+--
+ALTER TABLE `tbl_hasil`
+  MODIFY `id_hasil` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_kriteria`

@@ -18,7 +18,7 @@ if (isset($_GET['proses'])) {
         header("location: penilaian.php");
 
     } elseif ($_GET['proses'] == 'proses-ubah') {
-        $id_alternatif = $_GET('id_alternatif');
+        $id_alternatif = $_GET['id_alternatif'];
         $id_periode = $_POST['id_periode'];
 
         // Hapus semua nilai sebelumnya untuk id_alternatif yang bersangkutan
