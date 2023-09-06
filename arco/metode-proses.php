@@ -149,7 +149,7 @@ include '../assets/conn/config.php';
                     <tr>
                         <th class="text-center">No</th>
                         <th class="text-center">Nama Alternatif</th>
-                        <th class="text-center">Nilai WP</th>
+                        <th class="text-center">Nilai</th>
                         <th class="text-center">Ranking</th>
                     </tr>
                 </thead>
