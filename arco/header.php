@@ -41,10 +41,11 @@ include '../assets/conn/config.php';
         }
         /* CSS untuk mengganti warna teks */
         .logo-text h3 {
-            color: #3B71CA; /* Ganti kode warna dengan kode warna yang Anda inginkan */
+            color: #0063ae; /* Ganti kode warna dengan kode warna yang Anda inginkan */
         }
-
-
+        .dropdown.menu li a {
+        color: #0063ae; /* Ubah warna teks menjadi merah */
+        }
         </style>    
     </head>
 
@@ -52,7 +53,7 @@ include '../assets/conn/config.php';
  
     <div class="wrap">
         <header id="header">
-        <div class="panel panel-container"style="padding: 30px; box-shadow: 2px 2px 5px #BC8F8F; background-color: 	#D8BFD8;">
+        <div class="panel panel-container"style="padding: 30px; box-shadow: 2px 2px 5px #888888; background-color: 	#D4D4D4;">
                 <div class="row">
                     <div class="col-md-12">
                         <button id="primary-nav-button" type="button">Menu</button>
@@ -64,13 +65,13 @@ include '../assets/conn/config.php';
                         </div></a>
                         <nav id="primary-nav" class="dropdown cf">
                         <ul class="dropdown menu">
-                                <li class="active"><a href="index.php"><span class="fa fa-home"></span><b>&emsp;Home</b></a></li>
-                                <li><a href="alternatif.php"><span class="fa fa-user"></span><b>&emsp;Alternatif</b></a></li>
-                                <li><a class="scrollTo" data-scrollTo="blog" href="kriteria.php"><span class="fa fa-list"></span><b>&emsp;Kriteria</b></a></li>
-                                <li><a class="scrollTo" data-scrollTo="blog" href="penilaian.php"><span class="fa fa-pencil"></span><b>&emsp;Penilaian</b></a></li>
-                                <li><a class="scrollTo" data-scrollTo="services" href="metode.php"><span class="fa fa-refresh"></span><b>&emsp;Metode WP</b></a></li>
-                                <li><a class="scrollTo" data-scrollTo="contact" href="logout.php"><span class="fa fa-power-off"></span><b>&emsp;Logout</b></a></li>
-                            </ul>
+                            <li class="active"><a href="index.php" style="color: #0063ae;"><span class="fa fa-home"></span><b>&emsp;Home</b></a></li>
+                            <li><a href="alternatif.php" style="color: #0063ae;"><span class="fa fa-user"></span><b>&emsp;Alternatif</b></a></li>
+                            <li><a class="scrollTo" data-scrollTo="blog" href="kriteria.php" style="color: #0063ae;"><span class="fa fa-list"></span><b>&emsp;Kriteria</b></a></li>
+                            <li><a class="scrollTo" data-scrollTo="blog" href="penilaian.php" style="color: #0063ae;"><span class="fa fa-pencil"></span><b>&emsp;Penilaian</b></a></li>
+                            <li><a class="scrollTo" data-scrollTo="services" href="metode.php" style="color: #0063ae;"><span class="fa fa-refresh"></span><b>&emsp;Metode WP</b></a></li>
+                            <li><a class="scrollTo" data-scrollTo="contact" href="logout.php" style="color: #0063ae;"><span class="fa fa-power-off"></span><b>&emsp;Logout</b></a></li>
+                        </ul>
                         </nav>
                     </div>
                 </div>
