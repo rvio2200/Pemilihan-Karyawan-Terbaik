@@ -15,7 +15,7 @@ if (isset($_GET['proses'])) {
             $result = mysqli_query($conn, $query);
         }
 
-        header("location: penilaian-tambah.php");
+        header("location:penilaian-tambah.php?id_alternatif=$id_alternatif");
 
     } elseif ($_GET['proses'] == 'proses-ubah') {
         $id_alternatif = $_GET['id_alternatif'];
@@ -34,7 +34,7 @@ if (isset($_GET['proses'])) {
             $result = mysqli_query($conn, $query);
         }
 
-        header("location: penilaian-tambah.php");
+        header("location:penilaian-tambah.php?id_alternatif=$_GET[id_alternatif]");
 
     } elseif ($_GET['proses'] == 'proses-hapus') {
         $id_periode = $_GET['id_periode'];
@@ -42,7 +42,7 @@ if (isset($_GET['proses'])) {
         // Menghapus nilai dari tbl_nilai
         mysqli_query($conn, "DELETE FROM tbl_nilai WHERE id_alternatif='$id_alternatif'");
 
-        header("location: penilaian.php");
+        header("location: penilaian-tambah.php?id_alternatif=$_GET[id_alternatif]");
     }
 }
 ?>

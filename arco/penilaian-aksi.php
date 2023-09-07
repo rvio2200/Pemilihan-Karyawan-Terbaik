@@ -93,17 +93,18 @@ include '../assets/conn/config.php';
             
             <form action="penilaian-proses.php?proses=proses-tambah" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id_alternatif" value="<?php echo $_GET['id_alternatif']; ?>">
-                <div class="form-group">
-                    <label>Periode</label>
-                    <select class="form-control" name="id_periode">
-                        <option disabled selected>Pilih Periode</option>
-                        <?php 
-                        $query = mysqli_query($conn, "SELECT * FROM tbl_periode ORDER BY id_periode");
-                        while ($p = mysqli_fetch_array($query)) { ?>
-                            <option value="<?php echo $p['id_periode'] ?>"><?php echo $p['nama_periode'] ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
+            <div class="form-group">
+                <label>Periode</label>
+                <select class="form-control" name="id_periode" autocomplete="off" required>
+                    <option disabled selected>Pilih Periode</option>
+                    <?php 
+                    $query = mysqli_query($conn, "SELECT * FROM tbl_periode ORDER BY id_periode");
+                    while ($p = mysqli_fetch_array($query)) { ?>
+                        <option value="<?php echo $p['id_periode'] ?>"><?php echo $p['nama_periode'] ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
 
                 <?php
                 $hasil = mysqli_query($conn, "SELECT * FROM tbl_kriteria ORDER BY id_kriteria");
@@ -122,9 +123,10 @@ include '../assets/conn/config.php';
 
                         // Ubah <select> menjadi radio button
                         echo "<div class='form-check'>";
-                        echo "<input type='radio' class='form-check-input' name='".$idK."' value='".$idSubkriteria."' id='".$idSubkriteria."'>";
-                        echo "<label class='form-check-label' for='".$idSubkriteria."'style='margin-left: 10px; font-weight: normal;'>".$namaSubkriteria." - (".$nilaiSubkriteria.")</label>";
+                        echo "<input type='radio' class='form-check-input' name='".$idK."' value='".$idSubkriteria."' id='".$idSubkriteria."' autocomplete='off' required>";
+                        echo "<label class='form-check-label' for='".$idSubkriteria."' style='margin-left: 10px; font-weight: normal;'>".$namaSubkriteria." - (".$nilaiSubkriteria.")</label>";
                         echo "</div>";
+                        ;
                     }
 
                     echo "</div>";
@@ -158,7 +160,7 @@ include '../assets/conn/config.php';
                     $p = mysqli_fetch_array($data);
                     ?>
 
-                    <select class="form-control" name="id_periode">
+                    <select class="form-control" name="id_periode" autocomplete="off" required onsubmit="this.setCustomValidity('')">
                         <option value="<?php echo $p['id_periode'] ?>"><?php echo $p['nama_periode'] ?></option>
 
                         <?php 

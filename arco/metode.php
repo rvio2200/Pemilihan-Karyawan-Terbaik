@@ -87,32 +87,7 @@ include '../assets/conn/config.php';
 
     <br>
     <br>
-    <form action="metode-proses.php" method="POST" class="form-inline" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="periode">Filter Periode:</label>
-            <select class="form-control" id="periode" name="periode">
-                <option value="">-- Pilih Periode --</option>
-                <?php
-                // Koneksi ke database menggunakan $conn (sesuaikan dengan kode Anda)
-                $sql = "SELECT id_periode, nama_periode FROM tbl_periode";
-                $result = mysqli_query($conn, $sql);
-
-                if (mysqli_num_rows($result) > 0) {
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $id_periode = $row['id_periode'];
-                        $nama_periode = $row['nama_periode'];
-                        echo "<option value='$id_periode'>$nama_periode</option>";
-                    }
-                } else {
-                    echo "<option value=''>Tidak ada data periode</option>";
-                }
-                ?>
-            </select>
-        </div>
-        <a href="metode-aksi.php"><button type="submit" class="btn btn-success btn-sm">Filter</button></a>
-    </form>
-
-    <!-- <style>
+    <style>
     .sticky-title {
         position: sticky;
         top: 0;
@@ -140,25 +115,17 @@ include '../assets/conn/config.php';
             </thead>
             <tbody>
                 <?php
-                $query = mysqli_query($conn, "SELECT * FROM tbl_kriteria order by id_kriteria");
-                $no = 1;
-                while ($result = mysqli_fetch_array($query)) { ?>
-                <tr>
-                    <td class="text-center"><?php echo $no++ ?></td>
-                    <td class="text-left"><?php echo $result['nama_kriteria'] ?></td>
-                    <td class="text-center"><?php echo $result['bobot_kriteria'] ?> / 13</td>
-                    <td class="text-center">
-                        <?php
-                        $bobot = $result['bobot_kriteria'];
-                        if ($result['tipe_kriteria'] == 'Cost') { // Jika tipe kriteria adalah "cost"
-                            $bobot = -1 * $bobot; // Kalikan bobot dengan -1
-                        }
-                        echo number_format($bobot / 13, 4, '.', ',');
-                        ?>
-                    </td>
-                </tr>
+                    $query = mysqli_query($conn, "SELECT * FROM tbl_kriteria order by id_kriteria");
+                    $no=1;
+                    while ($result = mysqli_fetch_array($query)) { ?>
+                    <tr>
+                        <td class="text-center"><?php echo $no++?></td>
+                        <td class="text-left"><?php echo $result['nama_kriteria']?></td>
+                        <td class="text-center"><?php echo $result['bobot_kriteria']?> / 13</td>
+                        <td class="text-center"><?php echo number_format($result['bobot_kriteria']/13, 4, '.', ','); ?></td>    
+                    </tr>
                 <?php
-                }
+                    }
                 ?>
             </tbody>
         </table>
@@ -173,10 +140,112 @@ include '../assets/conn/config.php';
         padding: 10px; /* Atur padding judul sesuai kebutuhan */
     }
     </style>
-    <h4 class="modal-title sticky-title"><b>Nilai Vektor S dan Vektor V</b></h4>
+    <h4 class="modal-title sticky-title"><b>Nilai Konversi Keputusan</b></h4>
     <br>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center"style="vertical-align: middle;">No</th>
+                    <th class="text-center"style="vertical-align: middle;"style="white-space: nowrap;">Nama Alternatif</th>
+                    <?php
+                    $data = mysqli_query($conn,"SELECT * FROM tbl_kriteria ORDER BY id_kriteria");
+                    while ($a=mysqli_fetch_array($data)) {
+                        echo "<th class='text-center'style='vertical-align: middle;'>$a[nama_kriteria]</th>";
+                    }
+                    ?>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                    $query = mysqli_query($conn, "SELECT * FROM tbl_alternatif order by id_alternatif");
+                    $no=1;
+                    while ($result = mysqli_fetch_array($query)) {
+                        $nomor = $no++;
+                        $kode = $result['id_alternatif'];
+                        $nama = $result['nama_alternatif'];
 
-    <div class="table-condensed">
+                        echo "<tr>
+                        <td class='text-center'style='vertical-align: middle';>$nomor</td>
+                        <td class='text-left'style='vertical-align: middle';>$nama</td>
+                        ";
+
+                        $query1 = mysqli_query($conn, "SELECT a.nilai_subkriteria as nama_sub FROM tbl_subkriteria a, tbl_nilai b WHERE b.id_alternatif='".$kode."' AND a.id_subkriteria=b.id_subkriteria ORDER BY b.id_kriteria");
+                        while ($b=mysqli_fetch_array($query1)) {
+                            echo "<td class='text-center'style='vertical-align: middle;'>$b[nama_sub]</td>";
+                        }
+                        
+                ?>
+
+                    </tr>
+                <?php
+                    }
+                ?>
+            </tbody>
+        </table>
+    </div>
+<br>
+
+<?php
+//Set Vektor S dan Vektor V
+
+$query=mysqli_query($conn, "SELECT * FROM tbl_alternatif");
+$jumlah=0;
+while ($result=mysqli_fetch_array($query)) {
+    $nomor=$no++;
+    $vektor_s=1;
+    $id=$result['id_alternatif'];
+    $nama=$result['nama_alternatif'];
+
+    //Panggil nilai matriks keputusan
+    $query2=mysqli_query($conn, "SELECT s.nilai_subkriteria as sub,n.id_kriteria as id_kriteria FROM tbl_subkriteria s, tbl_nilai n, tbl_kriteria k WHERE n.id_alternatif='$id' AND s.id_subkriteria=n.id_subkriteria AND k.id_kriteria=n.id_kriteria ORDER BY n.id_kriteria");
+    while ($result2=mysqli_fetch_array($query2)) {
+        $val = $result2['sub'];
+
+        //Panggil nilai bobot
+        $query3=mysqli_query($conn, "SELECT bobot_kriteria FROM tbl_kriteria WHERE id_kriteria='$result2[id_kriteria]'");
+        $result3=mysqli_fetch_assoc($query3);
+        //Normalisasikan nilai bobot kriteria
+        $bobot_k=$result3['bobot_kriteria']/13;
+
+        //Vektor S
+        $val_s = $val ** $bobot_k;
+        $vektor_s *= $val_s;
+
+    }
+
+        //ambil nilai vektor_s simpan ke dalam database
+        mysqli_query($conn, "UPDATE tbl_alternatif SET vektor_s ='$vektor_s' WHERE id_alternatif='$id'");
+
+        //Vektor V
+        $query4 = mysqli_query($conn, "SELECT sum(vektor_s) as sum_s FROM tbl_alternatif");
+        $b = mysqli_fetch_array($query4);
+        $vektor_v = $vektor_s/$b['sum_s'];
+
+        //ambil nilai vektor_v simpan ke dalam database
+        mysqli_query($conn, "UPDATE tbl_alternatif SET vektor_v ='$vektor_v' WHERE id_alternatif='$id'");
+        $jumlah++;
+}
+
+        //Set Ranking
+        $query5 = mysqli_query($conn, "SELECT * FROM tbl_alternatif ORDER BY vektor_v DESC");
+        $rank = 1;
+        while ($result5=mysqli_fetch_array($query5)) {
+            mysqli_query($conn, "UPDATE tbl_alternatif SET ranking='$rank' WHERE id_alternatif='" . $result5['id_alternatif'] . "'");
+            $rank++;
+        }
+?>
+<style>
+    .sticky-title {
+        position: sticky;
+        top: 0;
+        background-color: #f1f1f1; /* Warna latar belakang judul */
+        padding: 10px; /* Atur padding judul sesuai kebutuhan */
+    }
+    </style>
+<h4 class="modal-title sticky-title"><b>Nilai Vektor S dan Vektor V</b></h4>
+<br>
+<div class="table-condensed">
         <style>
         .center-table {
             margin: 0 auto; /* Mengatur margin horizontal menjadi auto */
@@ -193,9 +262,9 @@ include '../assets/conn/config.php';
             </thead>
             <tbody>
                 <?php
-                $query = mysqli_query($conn, "SELECT * FROM tbl_hasil order by id_alternatif");
-                $no=1;
-                while ($result = mysqli_fetch_array($query)) {
+                    $query = mysqli_query($conn, "SELECT * FROM tbl_alternatif order by id_alternatif");
+                    $no=1;
+                    while ($result = mysqli_fetch_array($query)) {
                 ?>
                     <tr>
                         <td class="text-center"><?php echo $no++ ?></td>
@@ -205,7 +274,7 @@ include '../assets/conn/config.php';
                         
                     </tr>
                 <?php
-                }
+                    }
                 ?>
             </tbody>
         </table>
@@ -220,40 +289,40 @@ include '../assets/conn/config.php';
         padding: 10px; /* Atur padding judul sesuai kebutuhan */
     }
     </style>
-
+    
     <h4 class="modal-title sticky-title"><b>Hasil Perankingan</b></h4>
+<head>
+<style>
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+  }
 
-    <head>
-    <style>
-      .btn {
-        display: inline-block;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        text-decoration: none;
-        transition: background-color 0.3s, color 0.3s;
-      }
+  .btn-primary {
+    background-color: #3498db;
+    color: white;
+  }
 
-      .btn-primary {
-        background-color: #3498db;
-        color: white;
-      }
+  .btn-primary:hover {
+    background-color: #2980b9;
+  }
+  .modal-footer .btn {
+  padding: 5px 10px; /* Sesuaikan sesuai kebutuhan Anda */
+  font-size: inherit; /* Mempertahankan ukuran font yang ada */
+}
 
-      .btn-primary:hover {
-        background-color: #2980b9;
-      }
-      .modal-footer .btn {
-      padding: 5px 10px; /* Sesuaikan sesuai kebutuhan Anda */
-      font-size: inherit; /* Mempertahankan ukuran font yang ada */
-    }
-    </style>
-    </head>
-    <body>
-        <div class="modal-footer">
-            <h4 class="btn btn-primary"><a href="cetak.php" target="_blank" style="color: white;">Cetak</a></h4>
-        </div>
-    </body>
+</style>
+</head>
+<body>
+    <div class="modal-footer">
+        <h4 class="btn btn-primary"><a href="cetak.php" target="_blank" style="color: white;">Cetak</a></h4>
+    </div>
+</body>
 
     <div class="table-condensed">
         <style>
@@ -272,9 +341,9 @@ include '../assets/conn/config.php';
             </thead>
             <tbody>
                 <?php
-                $query = mysqli_query($conn, "SELECT * FROM tbl_hasil order by ranking");
-                $no=1;
-                while ($result = mysqli_fetch_array($query)) {
+                    $query = mysqli_query($conn, "SELECT * FROM tbl_alternatif order by ranking");
+                    $no=1;
+                    while ($result = mysqli_fetch_array($query)) {
                 ?>
                     <tr>
                         <td class="text-center"><?php echo $no++ ?></td>
@@ -283,11 +352,12 @@ include '../assets/conn/config.php';
                         <td class="text-center"><?php echo $result['ranking']; ?></td>
                     </tr>
                 <?php
-                }
+                    }
                 ?>
             </tbody>
         </table>
     </div>
+
 </div>
 </div>
 

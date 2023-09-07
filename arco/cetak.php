@@ -77,7 +77,7 @@ include '../assets/conn/config.php';
             </thead>
             <tbody>
                 <?php
-                    $query = mysqli_query($conn, "SELECT * FROM tbl_hasil order by ranking");
+                    $query = mysqli_query($conn, "SELECT * FROM tbl_alternatif order by ranking");
                     $no=1;
                     while ($result = mysqli_fetch_array($query)) {
                 ?>

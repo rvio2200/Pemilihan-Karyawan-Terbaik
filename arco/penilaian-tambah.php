@@ -48,7 +48,9 @@ include '../assets/conn/config.php';
             color: #0063ae; /* Ganti kode warna dengan kode warna yang Anda inginkan */
         }
 
-
+        .dropdown.menu li a {
+        color: #0063ae; /* Ubah warna teks menjadi merah */
+        }
         </style>    
     </head>
 
@@ -56,7 +58,7 @@ include '../assets/conn/config.php';
  
     <div class="wrap">
         <header id="header">
-        <div class="panel panel-container"style="padding: 30px; box-shadow: 2px 2px 5px #BC8F8F; background-color: 	#939ca1;">
+        <div class="panel panel-container"style="padding: 30px; box-shadow: 2px 2px 5px #888888; background-color: 	#D4D4D4;">
                 <div class="row">
                     <div class="col-md-12">
                         <button id="primary-nav-button" type="button">Menu</button>
@@ -68,13 +70,13 @@ include '../assets/conn/config.php';
                         </div></a>
                         <nav id="primary-nav" class="dropdown cf">
                         <ul class="dropdown menu">
-                                <li class="active"><a href="index.php"><span class="fa fa-home"></span><b>&emsp;Home</b></a></li>
-                                <li><a href="alternatif.php"><span class="fa fa-user"></span><b>&emsp;Alternatif</b></a></li>
-                                <li><a class="scrollTo" data-scrollTo="blog" href="kriteria.php"><span class="fa fa-list"></span><b>&emsp;Kriteria</b></a></li>
-                                <li><a class="scrollTo" data-scrollTo="blog" href="penilaian.php"><span class="fa fa-pencil"></span><b>&emsp;Penilaian</b></a></li>
-                                <li><a class="scrollTo" data-scrollTo="services" href="metode.php"><span class="fa fa-refresh"></span><b>&emsp;Metode WP</b></a></li>
-                                <li><a class="scrollTo" data-scrollTo="contact" href="logout.php"><span class="fa fa-power-off"></span><b>&emsp;Logout</b></a></li>
-                            </ul>
+                            <li class="active"><a href="index.php" style="color: #0063ae;"><span class="fa fa-home"></span><b>&emsp;Home</b></a></li>
+                            <li><a href="alternatif.php" style="color: #0063ae;"><span class="fa fa-user"></span><b>&emsp;Alternatif</b></a></li>
+                            <li><a class="scrollTo" data-scrollTo="blog" href="kriteria.php" style="color: #0063ae;"><span class="fa fa-list"></span><b>&emsp;Kriteria</b></a></li>
+                            <li><a class="scrollTo" data-scrollTo="blog" href="penilaian.php" style="color: #0063ae;"><span class="fa fa-pencil"></span><b>&emsp;Penilaian</b></a></li>
+                            <li><a class="scrollTo" data-scrollTo="services" href="metode.php" style="color: #0063ae;"><span class="fa fa-refresh"></span><b>&emsp;Metode WP</b></a></li>
+                            <li><a class="scrollTo" data-scrollTo="contact" href="logout.php" style="color: #0063ae;"><span class="fa fa-power-off"></span><b>&emsp;Logout</b></a></li>
+                        </ul>
                         </nav>
                     </div>
                 </div>
@@ -99,41 +101,58 @@ include '../assets/conn/config.php';
                         <th class="text-center">No</th>
                         <th class="text-center">Kriteria</th>
                         <th class="text-center">Nilai</th>
+                        <th class="text-center">Periode</th>
                     </tr>   
             </thead>
             <tbody>
             <?php
-                $id_alternatif = $_GET['id_alternatif'];
-                $query_kriteria = mysqli_query($conn, "SELECT * FROM tbl_kriteria ORDER BY id_kriteria");
-                $no = 1;
+$id_alternatif = $_GET['id_alternatif'];
+$query_kriteria = mysqli_query($conn, "SELECT * FROM tbl_kriteria ORDER BY id_kriteria");
+$no = 1;
 
-                while ($result_kriteria = mysqli_fetch_array($query_kriteria)) {
-                    $nomor = $no++;
-                    $kode = $result_kriteria['id_kriteria'];
-                    $nama = $result_kriteria['nama_kriteria'];
+while ($result_kriteria = mysqli_fetch_array($query_kriteria)) {
+    $nomor = $no++;
+    $kode = $result_kriteria['id_kriteria'];
+    $nama = $result_kriteria['nama_kriteria'];
 
-                    // Query untuk mendapatkan nilai subkriteria
-                        $query_nilai = mysqli_query($conn, "SELECT n.id_subkriteria, s.nama_subkriteria, s.nilai_subkriteria
-                        FROM tbl_nilai n
-                        JOIN tbl_subkriteria s ON n.id_subkriteria = s.id_subkriteria
-                        WHERE n.id_alternatif = $id_alternatif AND n.id_kriteria = $kode");
+    // Query untuk mendapatkan nilai subkriteria
+    $query_nilai = mysqli_query($conn, "SELECT n.id_subkriteria, s.nama_subkriteria, s.nilai_subkriteria
+                    FROM tbl_nilai n
+                    JOIN tbl_subkriteria s ON n.id_subkriteria = s.id_subkriteria
+                    WHERE n.id_alternatif = $id_alternatif AND n.id_kriteria = $kode");
 
-                    $row_nilai = mysqli_fetch_array($query_nilai);
+    $row_nilai = mysqli_fetch_array($query_nilai);
 
-                    if ($row_nilai) {
-                    $nilai = $row_nilai['nama_subkriteria'] . ' (' . $row_nilai['nilai_subkriteria'] . ')';
-                    } else {
-                    $nilai = 'Belum dinilai';
+    if ($row_nilai) {
+        $nilai = $row_nilai['nama_subkriteria'] . ' (' . $row_nilai['nilai_subkriteria'] . ')';
+    } else {
+        $nilai = 'Belum dinilai';
+    }
+
+    // Query untuk mendapatkan periode
+    $query_periode = mysqli_query($conn, "SELECT n.id_periode, p.nama_periode
+                    FROM tbl_nilai n
+                    JOIN tbl_periode p ON n.id_periode = p.id_periode
+                    WHERE n.id_alternatif = $id_alternatif AND n.id_kriteria = $kode");
+
+    $row_periode = mysqli_fetch_array($query_periode);
+
+    if ($row_periode) {
+        $periode = $row_periode['nama_periode'];
+    } else {
+        $periode = 'Belum dinilai';
+    }
+
+    // Output baris tabel
+    echo "<tr>
+            <td class='text-center' style='vertical-align: middle;'>$nomor</td>
+            <td class='text-left' style='vertical-align: middle;'>$nama</td>
+            <td class='text-center' style='vertical-align: middle;'>$nilai</td>
+            <td class='text-center' style='vertical-align: middle;'>$periode</td>
+          </tr>";
 }
+?>
 
-                    // Output baris tabel
-                    echo "<tr>
-                            <td class='text-center' style='vertical-align: middle;'>$nomor</td>
-                            <td class='text-left' style='vertical-align: middle;'>$nama</td>
-                            <td class='text-center' style='vertical-align: middle;'>$nilai</td>
-                        </tr>";
-                }
-                ?>
             </tbody>
         </table>
     </div>
