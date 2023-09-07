@@ -89,6 +89,27 @@ include '../assets/conn/config.php';
         $query1 = mysqli_query($conn, "SELECT * FROM tbl_alternatif WHERE id_alternatif='$_GET[id_alternatif]'");
         $result1 = mysqli_fetch_array($query1); ?>
         <h2><b>PENILAIAN/<a href="penilaian.php"><?php echo $result1['nama_alternatif']; ?></a></b></h2>
+        <div class="form-group">
+            <label for="periode">Filter Periode:</label>
+            <select class="form-control" id="periode" name="periode">
+                <option value="">-- Pilih Periode --</option>
+                <?php
+                // Koneksi ke database menggunakan $conn (sesuaikan dengan kode Anda)
+                $sql = "SELECT id_periode, nama_periode FROM tbl_periode";
+                $result = mysqli_query($conn, $sql);
+
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $id_periode = $row['id_periode'];
+                        $nama_periode = $row['nama_periode'];
+                        echo "<option value='$id_periode'>$nama_periode</option>";
+                    }
+                } else {
+                    echo "<option value=''>Tidak ada data periode</option>";
+                }
+                ?>
+            </select>
+        </div>
     <div>
     <a href='penilaian-aksi.php?id_alternatif=<?php echo $_GET['id_alternatif'] ?>&aksi=tambah' class='btn btn-info btn-sm'>Nilai</a>
     <a href='penilaian-aksi.php?id_alternatif=<?php echo $_GET['id_alternatif'] ?>&aksi=ubah&id_alternatif ?>' class='btn btn-danger btn-sm'>Ubah</a></div>
