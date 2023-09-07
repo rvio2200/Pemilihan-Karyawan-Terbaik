@@ -47,9 +47,8 @@ include '../assets/conn/config.php';
         .logo-text h3 {
             color: #0063ae; /* Ganti kode warna dengan kode warna yang Anda inginkan */
         }
-        .dropdown.menu li a {
-        color: #0063ae; /* Ubah warna teks menjadi merah */
-        }
+
+
         </style>    
     </head>
 
@@ -57,7 +56,7 @@ include '../assets/conn/config.php';
  
     <div class="wrap">
         <header id="header">
-        <div class="panel panel-container"style="padding: 30px; box-shadow: 2px 2px 5px #888888; background-color: 	#D4D4D4;">
+        <div class="panel panel-container"style="padding: 30px; box-shadow: 2px 2px 5px #BC8F8F; background-color: 	#939ca1;">
                 <div class="row">
                     <div class="col-md-12">
                         <button id="primary-nav-button" type="button">Menu</button>
@@ -69,13 +68,13 @@ include '../assets/conn/config.php';
                         </div></a>
                         <nav id="primary-nav" class="dropdown cf">
                         <ul class="dropdown menu">
-                            <li class="active"><a href="index.php" style="color: #0063ae;"><span class="fa fa-home"></span><b>&emsp;Home</b></a></li>
-                            <li><a href="alternatif.php" style="color: #0063ae;"><span class="fa fa-user"></span><b>&emsp;Alternatif</b></a></li>
-                            <li><a class="scrollTo" data-scrollTo="blog" href="kriteria.php" style="color: #0063ae;"><span class="fa fa-list"></span><b>&emsp;Kriteria</b></a></li>
-                            <li><a class="scrollTo" data-scrollTo="blog" href="penilaian.php" style="color: #0063ae;"><span class="fa fa-pencil"></span><b>&emsp;Penilaian</b></a></li>
-                            <li><a class="scrollTo" data-scrollTo="services" href="metode.php" style="color: #0063ae;"><span class="fa fa-refresh"></span><b>&emsp;Metode WP</b></a></li>
-                            <li><a class="scrollTo" data-scrollTo="contact" href="logout.php" style="color: #0063ae;"><span class="fa fa-power-off"></span><b>&emsp;Logout</b></a></li>
-                        </ul>
+                                <li class="active"><a href="index.php"><span class="fa fa-home"></span><b>&emsp;Home</b></a></li>
+                                <li><a href="alternatif.php"><span class="fa fa-user"></span><b>&emsp;Alternatif</b></a></li>
+                                <li><a class="scrollTo" data-scrollTo="blog" href="kriteria.php"><span class="fa fa-list"></span><b>&emsp;Kriteria</b></a></li>
+                                <li><a class="scrollTo" data-scrollTo="blog" href="penilaian.php"><span class="fa fa-pencil"></span><b>&emsp;Penilaian</b></a></li>
+                                <li><a class="scrollTo" data-scrollTo="services" href="metode.php"><span class="fa fa-refresh"></span><b>&emsp;Metode WP</b></a></li>
+                                <li><a class="scrollTo" data-scrollTo="contact" href="logout.php"><span class="fa fa-power-off"></span><b>&emsp;Logout</b></a></li>
+                            </ul>
                         </nav>
                     </div>
                 </div>
@@ -89,27 +88,6 @@ include '../assets/conn/config.php';
         $query1 = mysqli_query($conn, "SELECT * FROM tbl_alternatif WHERE id_alternatif='$_GET[id_alternatif]'");
         $result1 = mysqli_fetch_array($query1); ?>
         <h2><b>PENILAIAN/<a href="penilaian.php"><?php echo $result1['nama_alternatif']; ?></a></b></h2>
-        <div class="form-group">
-            <label for="periode">Filter Periode:</label>
-            <select class="form-control" id="periode" name="periode">
-                <option value="">-- Pilih Periode --</option>
-                <?php
-                // Koneksi ke database menggunakan $conn (sesuaikan dengan kode Anda)
-                $sql = "SELECT id_periode, nama_periode FROM tbl_periode";
-                $result = mysqli_query($conn, $sql);
-
-                if (mysqli_num_rows($result) > 0) {
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $id_periode = $row['id_periode'];
-                        $nama_periode = $row['nama_periode'];
-                        echo "<option value='$id_periode'>$nama_periode</option>";
-                    }
-                } else {
-                    echo "<option value=''>Tidak ada data periode</option>";
-                }
-                ?>
-            </select>
-        </div>
     <div>
     <a href='penilaian-aksi.php?id_alternatif=<?php echo $_GET['id_alternatif'] ?>&aksi=tambah' class='btn btn-info btn-sm'>Nilai</a>
     <a href='penilaian-aksi.php?id_alternatif=<?php echo $_GET['id_alternatif'] ?>&aksi=ubah&id_alternatif ?>' class='btn btn-danger btn-sm'>Ubah</a></div>
@@ -135,10 +113,18 @@ include '../assets/conn/config.php';
                     $nama = $result_kriteria['nama_kriteria'];
 
                     // Query untuk mendapatkan nilai subkriteria
-                    $query_nilai = mysqli_query($conn, "SELECT * FROM tbl_nilai WHERE id_alternatif = $id_alternatif AND id_kriteria = $kode");
+                        $query_nilai = mysqli_query($conn, "SELECT n.id_subkriteria, s.nama_subkriteria, s.nilai_subkriteria
+                        FROM tbl_nilai n
+                        JOIN tbl_subkriteria s ON n.id_subkriteria = s.id_subkriteria
+                        WHERE n.id_alternatif = $id_alternatif AND n.id_kriteria = $kode");
+
                     $row_nilai = mysqli_fetch_array($query_nilai);
 
-                    $nilai = isset($row_nilai['id_subkriteria']) ? $row_nilai['id_subkriteria'] : 'Belum dinilai'; // Menampilkan "Belum dinilai" jika tidak ada nilai
+                    if ($row_nilai) {
+                    $nilai = $row_nilai['nama_subkriteria'] . ' (' . $row_nilai['nilai_subkriteria'] . ')';
+                    } else {
+                    $nilai = 'Belum dinilai';
+}
 
                     // Output baris tabel
                     echo "<tr>

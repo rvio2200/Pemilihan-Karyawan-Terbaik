@@ -21,7 +21,7 @@ if (isset($_GET['proses'])) {
     } elseif ($_GET['proses'] == 'proses-hapus') {
         $id_subkriteria = $_GET['id_subkriteria'];
         mysqli_query($conn, "DELETE FROM tbl_subkriteria WHERE id_subkriteria='$id_subkriteria'");
-        header("location:subkriteria.php?id_kriteria=$_POST[id_kriteria]");
+        header("location:subkriteria.php?id_kriteria=$_GET[id_kriteria]");
 
     }
 }

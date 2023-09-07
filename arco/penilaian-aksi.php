@@ -42,8 +42,9 @@ include '../assets/conn/config.php';
         }
         /* CSS untuk mengganti warna teks */
         .logo-text h3 {
-            color: #0063ae; /* Ganti kode warna dengan kode warna yang Anda inginkan */
+            color: #3B71CA; /* Ganti kode warna dengan kode warna yang Anda inginkan */
         }
+
         .dropdown.menu li a {
         color: #0063ae; /* Ubah warna teks menjadi merah */
         }
