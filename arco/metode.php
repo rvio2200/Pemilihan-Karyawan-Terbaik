@@ -83,11 +83,32 @@ include '../assets/conn/config.php';
 </div>
 
 <div class="panel panel-container" style="width: 50%; margin: 0 auto; padding: 20px; box-shadow: 2px 2px 5px #888888;">
-    <h2 class="text-center"><b>HASIL ANALISA PERHITUNGAN METODE WEIGHTED PRODUCT</b></h2>
+    <h2 class="text-center"><b>Hasil Analisa Perhitungan Metode Weighted Product</b></h2>\
+    <br>
+    <div class="form-group">
+            <label for="periode">Filter Periode:</label>
+            <div class="filter-wrapper">
+                <select class="form-control" id="periode" name="periode">
+                    <option value="">-- Pilih Periode --</option>
+                    <?php
+                    $sql = "SELECT id_periode, nama_periode FROM tbl_periode";
+                    $result = mysqli_query($conn, $sql);
 
-    <br>
-    <br>
-    <style>
+                    if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $id_periode = $row['id_periode'];
+                            $nama_periode = $row['nama_periode'];
+                            echo "<option value='$id_periode'>$nama_periode</option>";
+                        }
+                    } else {
+                        echo "<option value=''>Tidak ada data periode</option>";
+                    }
+                    ?>
+                </select>
+                <button type="submit" class="btn btn-primary btn btn-sm">Filter</button>
+            </div>
+        </div>
+    <!-- <style>
     .sticky-title {
         position: sticky;
         top: 0;
@@ -129,8 +150,8 @@ include '../assets/conn/config.php';
                 ?>
             </tbody>
         </table>
-    </div>
-    <br>
+    </div> -->
+    <!-- <br> -->
 
     <!-- <style>
     .sticky-title {
@@ -237,7 +258,7 @@ while ($result=mysqli_fetch_array($query)) {
 }
 
 ?>
-<style>
+<!-- <style>
     .sticky-title {
         position: sticky;
         top: 0;
@@ -280,7 +301,7 @@ while ($result=mysqli_fetch_array($query)) {
                 ?>
             </tbody>
         </table>
-    </div>
+    </div> -->
     <br>
 
     <style>
@@ -294,37 +315,51 @@ while ($result=mysqli_fetch_array($query)) {
     
     <h4 class="modal-title sticky-title"><b>Hasil Perankingan</b></h4>
 <head>
-<style>
-  .btn {
-    display: inline-block;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s, color 0.3s;
-  }
+        <style>
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-  .btn-primary {
-    background-color: #3498db;
-    color: white;
-  }
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
 
-  .btn-primary:hover {
-    background-color: #2980b9;
-  }
-  .modal-footer .btn {
-  padding: 5px 10px; /* Sesuaikan sesuai kebutuhan Anda */
-  font-size: inherit; /* Mempertahankan ukuran font yang ada */
-}
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
 
-</style>
-</head>
-<body>
-    <div class="modal-footer">
-        <h4 class="btn btn-primary"><a href="cetak.php" target="_blank" style="color: white;">Cetak</a></h4>
-    </div>
-</body>
+        .btn-outline-primary {
+            background-color: white;
+            border: 3px solid #3498db;
+            color: #3498db;
+        }
+
+        .modal-footer .btn {
+            padding: 5px 10px;
+            font-size: inherit;
+        }
+
+        .filter-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        </style>
+        </head>
+        <body>
+        <div class="modal-footer">
+            <a href="cetak.php" target="_blank" class="btn btn-outline-primary">
+            <span class="text-primary"><b>Cetak</b></span>
+            </a>
+        </div>
+        </body>
 
     <div class="table-condensed">
         <style>
