@@ -227,13 +227,15 @@ while ($result=mysqli_fetch_array($query)) {
         $jumlah++;
 }
 
-        //Set Ranking
+        // Set Ranking
         $query5 = mysqli_query($conn, "SELECT * FROM tbl_alternatif ORDER BY vektor_v DESC");
         $rank = 1;
-        while ($result5=mysqli_fetch_array($query5)) {
-            mysqli_query($conn, "UPDATE tbl_alternatif SET ranking='$rank' WHERE id_alternatif='" . $result5['id_alternatif'] . "'");
+        while ($result5 = mysqli_fetch_array($query5)) {
+            $id_alternatif = $result5['id_alternatif'];
+            mysqli_query($conn, "UPDATE tbl_alternatif SET ranking='$rank' WHERE id_alternatif='$id_alternatif'");
             $rank++;
-        }
+}
+
 ?>
 <style>
     .sticky-title {
