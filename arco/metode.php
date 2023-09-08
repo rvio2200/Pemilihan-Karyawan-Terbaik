@@ -132,7 +132,7 @@ include '../assets/conn/config.php';
     </div>
     <br>
 
-    <style>
+    <!-- <style>
     .sticky-title {
         position: sticky;
         top: 0;
@@ -184,7 +184,7 @@ include '../assets/conn/config.php';
             </tbody>
         </table>
     </div>
-<br>
+<br> -->
 
 <?php
 //Set Vektor S dan Vektor V
