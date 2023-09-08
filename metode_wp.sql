@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 08, 2023 at 02:27 AM
+-- Generation Time: Sep 08, 2023 at 07:24 AM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 7.3.12
 
@@ -64,26 +64,26 @@ CREATE TABLE `tbl_alternatif` (
 --
 
 INSERT INTO `tbl_alternatif` (`id_alternatif`, `nama_alternatif`, `position`, `vektor_s`, `vektor_v`, `ranking`) VALUES
-(1, 'Karyawan 1', 'SMD/GT', 3.8930794206457, 0.054380854311402, 6),
-(2, 'Karyawan 2', 'SMD/GT', 4.1397033813153, 0.05782584482553, 1),
-(3, 'Karyawan 3', 'SMD/GT', 3.9801912045791, 0.055597683643412, 4),
-(4, 'Karyawan 4', 'SMD/GT', 4, 0.055874384707397, 2),
-(5, 'Karyawan 5', 'SMD/GT', 2.767965501212, 0.038664592317881, 19),
-(6, 'Karyawan 6', 'SMD/GT', 4, 0.055874384707397, 3),
-(7, 'Karyawan 7', 'SMD/GT', 3.7430702254466, 0.052285436440852, 8),
-(8, 'Karyawan 8', 'SMD/GT', 3, 0.041905788530548, 18),
-(9, 'Karyawan 9', 'SMD/GT', 3.067128184032, 0.042843475025375, 17),
-(10, 'Karyawan 10', 'SMD/GT', 3.7245337973611, 0.052026508562364, 9),
-(11, 'Karyawan 11', 'SMD/GT', 3.4992982259749, 0.048880283821009, 14),
-(12, 'Karyawan 12', 'SMD/GT', 3.661148149856, 0.051141100048957, 10),
-(13, 'Karyawan 13', 'SMD/GT', 3.6430174161795, 0.05088783915184, 11),
-(14, 'Karyawan 14', 'SMD/GT', 2.5643591201294, 0.035820497001508, 20),
-(15, 'Karyawan 15', 'SMD/GT', 3.7430702254466, 0.052285436440852, 7),
-(16, 'Karyawan 16', 'SMD/GT', 3.4505640360441, 0.048199535601859, 16),
-(17, 'Karyawan 17', 'SMD/GT', 3.6101599008478, 0.050428865788797, 13),
-(18, 'Karyawan 18', 'SMD/GT', 3.6363773426536, 0.050795086646172, 12),
-(19, 'Karyawan 19', 'SMD/GT', 3.9801912045791, 0.055597683643412, 5),
-(21, 'Karyawan 20', 'TFA', 3.485297890143, 0.048684718783432, 15);
+(1, 'Karyawan 1', 'SMD/GT', 1, 0.014556872256094, 20),
+(2, 'Karyawan 2', 'SMD/GT', 1, 0.015254047211839, 19),
+(3, 'Karyawan 3', 'SMD/GT', 1, 0.015980521350221, 18),
+(4, 'Karyawan 4', 'SMD/GT', 1, 0.016785231606384, 17),
+(5, 'Karyawan 5', 'SMD/GT', 1, 0.017298579234242, 16),
+(6, 'Karyawan 6', 'SMD/GT', 1, 0.018245439791957, 15),
+(7, 'Karyawan 7', 'SMD/GT', 1, 0.019206707107535, 14),
+(8, 'Karyawan 8', 'SMD/GT', 1, 0.019973975710005, 13),
+(9, 'Karyawan 9', 'SMD/GT', 1, 0.020834193911756, 12),
+(10, 'Karyawan 10', 'SMD/GT', 1, 0.022087984454259, 11),
+(11, 'Karyawan 11', 'SMD/GT', 1, 0.023378586718053, 10),
+(12, 'Karyawan 12', 'SMD/GT', 1, 0.024929550874171, 9),
+(13, 'Karyawan 13', 'SMD/GT', 1, 0.026688003034875, 8),
+(14, 'Karyawan 14', 'SMD/GT', 1, 0.027850761782335, 7),
+(15, 'Karyawan 15', 'SMD/GT', 1, 0.03015445985112, 6),
+(16, 'Karyawan 16', 'SMD/GT', 1, 0.032560534723019, 5),
+(17, 'Karyawan 17', 'SMD/GT', 1, 0.035584825023223, 4),
+(18, 'Karyawan 18', 'SMD/GT', 1, 0.039268831487209, 3),
+(19, 'Karyawan 19', 'SMD/GT', 1, 0.044473504637818, 2),
+(21, 'Karyawan 20', 'TFA', 1, 0.05, 1);
 
 -- --------------------------------------------------------
 
@@ -597,7 +597,7 @@ ALTER TABLE `tbl_kriteria`
 -- AUTO_INCREMENT for table `tbl_nilai`
 --
 ALTER TABLE `tbl_nilai`
-  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=378;
+  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=417;
 
 --
 -- AUTO_INCREMENT for table `tbl_periode`
