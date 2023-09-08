@@ -108,7 +108,9 @@ include '../assets/conn/config.php';
                 <button type="submit" class="btn btn-primary btn btn-sm">Filter</button>
             </div>
         </div>
-    <!-- <style>
+                </div>
+                <br>
+    <style>
     .sticky-title {
         position: sticky;
         top: 0;
@@ -116,6 +118,7 @@ include '../assets/conn/config.php';
         padding: 10px; /* Atur padding judul sesuai kebutuhan */
     }
     </style>
+    <div class="panel panel-container" style="width: 50%; margin: 0 auto; padding: 20px; box-shadow: 2px 2px 5px #888888;">
     <h4 class="modal-title sticky-title"><b>Nilai Kriteria</b></h4>
     <br>
     
@@ -150,10 +153,11 @@ include '../assets/conn/config.php';
                 ?>
             </tbody>
         </table>
-    </div> -->
-    <!-- <br> -->
+    </div>
+                </div>
+    <br>
 
-    <!-- <style>
+    <style>
     .sticky-title {
         position: sticky;
         top: 0;
@@ -161,6 +165,7 @@ include '../assets/conn/config.php';
         padding: 10px; /* Atur padding judul sesuai kebutuhan */
     }
     </style>
+    <div class="panel panel-container" style="width: 50%; margin: 0 auto; padding: 20px; box-shadow: 2px 2px 5px #888888;">
     <h4 class="modal-title sticky-title"><b>Nilai Konversi Keputusan</b></h4>
     <br>
     <div class="table-responsive">
@@ -170,11 +175,16 @@ include '../assets/conn/config.php';
                     <th class="text-center"style="vertical-align: middle;">No</th>
                     <th class="text-center"style="vertical-align: middle;"style="white-space: nowrap;">Nama Alternatif</th>
                     <?php
-                    $data = mysqli_query($conn,"SELECT * FROM tbl_kriteria ORDER BY id_kriteria");
-                    while ($a=mysqli_fetch_array($data)) {
-                        echo "<th class='text-center'style='vertical-align: middle;'>$a[nama_kriteria]</th>";
-                    }
-                    ?>
+                        $data = mysqli_query($conn, "SELECT * FROM tbl_kriteria ORDER BY id_kriteria");
+                        $kriteriaCounter = 1; // Inisialisasi nomor urut kriteria
+
+                        while ($a = mysqli_fetch_array($data)) {
+                            $namaKriteria = "K" . $kriteriaCounter; // Format nama kriteria
+                            echo "<th class='text-center' style='vertical-align: middle;'>$namaKriteria</th>";
+                            $kriteriaCounter++; // Tingkatkan nomor urut kriteria
+                        }
+                        ?>
+
                 </tr>
             </thead>
             <tbody>
@@ -205,7 +215,8 @@ include '../assets/conn/config.php';
             </tbody>
         </table>
     </div>
-<br> -->
+                </div>
+<br>
 
 <?php
 //Set Vektor S dan Vektor V
@@ -258,7 +269,7 @@ while ($result=mysqli_fetch_array($query)) {
 }
 
 ?>
-<!-- <style>
+<style>
     .sticky-title {
         position: sticky;
         top: 0;
@@ -266,6 +277,7 @@ while ($result=mysqli_fetch_array($query)) {
         padding: 10px; /* Atur padding judul sesuai kebutuhan */
     }
     </style>
+    <div class="panel panel-container" style="width: 50%; margin: 0 auto; padding: 20px; box-shadow: 2px 2px 5px #888888;">
 <h4 class="modal-title sticky-title"><b>Nilai Vektor S dan Vektor V</b></h4>
 <br>
 <div class="table-condensed">
@@ -301,7 +313,8 @@ while ($result=mysqli_fetch_array($query)) {
                 ?>
             </tbody>
         </table>
-    </div> -->
+    </div>
+                </div>
     <br>
 
     <style>
@@ -312,7 +325,7 @@ while ($result=mysqli_fetch_array($query)) {
         padding: 10px; /* Atur padding judul sesuai kebutuhan */
     }
     </style>
-    
+    <div class="panel panel-container" style="width: 50%; margin: 0 auto; padding: 20px; box-shadow: 2px 2px 5px #888888;">
     <h4 class="modal-title sticky-title"><b>Hasil Perankingan</b></h4>
 <head>
         <style>
@@ -397,6 +410,8 @@ while ($result=mysqli_fetch_array($query)) {
 
 </div>
 </div>
+<br>
+<br>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
 <script>window.jQuery || document.write('<script src="../assets/desain-home/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
